@@ -1,0 +1,99 @@
+% Draw an angle annotation
+% Input:
+%   #1 Angle
+%   #2 Label
+% Example:
+%   \angann{30}{$\theta_1$}
+\newcommand{\angann}[2]{%
+    \begin{scope}[red]
+    \draw [dashed, red] (0,0) -- (1.2\ddx,0pt);
+    \draw [->, shorten >=3.5pt] (\ddx,0pt) arc (0:#1:\ddx);
+    % Unfortunately automatic node placement on an arc is not supported yet.
+    % We therefore have to compute an appropriate coordinate ourselves.
+    \node at (#1/2-2:\ddx+8pt) {#2};
+    \end{scope}
+}
+
+% Draw line annotation
+% Input:
+%   #1 Line offset (optional)
+%   #2 Line angle
+%   #3 Line length
+%   #5 Line label
+% Example:
+%   \lineann[1]{30}{2}{$L_1$}
+\newcommand{\lineann}[4][0.5]{%
+    \begin{scope}[rotate=#2, blue,inner sep=2pt]
+        \draw[dashed, blue!40] (0,0) -- +(0,#1)
+            node [coordinate, near end] (a) {};
+        \draw[dashed, blue!40] (#3,0) -- +(0,#1)
+            node [coordinate, near end] (b) {};
+        \draw[|<->|] (a) -- node[fill=white] {#4} (b);
+    \end{scope}
+}
+
+\newcommand{\lineannt}[4][0.5]{%
+    \begin{scope}[rotate=#2, blue,inner sep=2pt]
+        \draw[dashed, blue!40] (0,0) -- +(0,#1)
+            node [coordinate, near end] (a) {};
+        \draw[dashed, blue!40] (#3,0) -- +(0,#1)
+            node [coordinate, near end] (b) {};
+        \draw[draw=none] (a)  node[above,fill=white] {#4} -- (b);
+        \draw[->|] (a)++(-0.5,0) -- (a);
+        \draw[->|] (b)++(0.5,0) -- (b);
+    \end{scope}
+}
+
+\tikzset{
+	force/.style=	{
+		>=latex,
+		draw=blue,
+		fill=blue,
+				 	}, 
+	%				 	
+	axis/.style=	{
+		densely dashed,
+		blue,
+		line width=1pt,
+		font=\small,
+					},
+	%
+	th/.style=	{
+		line width=1pt},
+	%
+	acceleration/.style={
+		>=open triangle 60,
+		draw=magenta,
+		fill=magenta,
+					},
+	%
+	inforce/.style=	{
+		force,
+		double equal sign distance=2pt,
+					},
+	%
+	interface/.style={
+		pattern = north east lines, 
+		draw    = none, 
+		pattern color=gray!60,
+					},
+	cross/.style=	{
+		cross out, 
+		draw=black, 
+		minimum size=2*(#1-\pgflinewidth), 
+		inner sep=0pt, outer sep=0pt,
+					},
+	%
+	cargo/.style=	{
+		rectangle, 
+		fill=black!70, 
+		inner sep=2.5mm,
+					},
+	%
+	caption/.style= {
+		midway,
+		fill=white!20, 
+		opacity=0.9
+					},
+	%
+	}

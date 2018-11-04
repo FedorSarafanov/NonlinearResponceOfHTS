@@ -1,0 +1,56 @@
+\documentclass[tikz, border=1pt]{standalone}
+\usepackage{cmap}
+\usepackage[defaultsans]{droidsans}
+\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be typewriter style
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\usepackage{esdiff,esint}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{polar}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{decorations.markings, patterns}
+
+\definecolor{ochre}{HTML}{e2431e} % #e2431e 0
+\definecolor{lightorange}{HTML}{e7711b} % #e7711b 1
+\definecolor{lightyellow}{HTML}{f1ca3a} % #f1ca3a 2
+\definecolor{lightgreen}{HTML}{6f9654} % #6f9654 3
+\definecolor{osci}{HTML}{82FF27}%#82FF27
+\definecolor{sky}{HTML}{1c91c0} % #1c91c0 4
+\definecolor{violet}{HTML}{43459d} % #43459d 5
+
+\tikzset{
+	lin/.style={
+			line width=0.8pt,
+			mark=none,
+			black
+		},
+}
+
+\pgfplotsset{
+	every axis/.append style={
+			line width=0.7pt,
+			no markers,
+			scale=0.7
+		},
+	error bars/.cd={
+			y dir = both,
+			y explicit
+		}
+}
+\tikzset{
+	line/.style={
+			smooth, solid
+		}
+}
+
+\tikzset{
+  pics/carc/.style args={#1:#2:#3}{
+    code={
+      \draw[pic actions] (#1:#3) arc(#1:#2:#3);
+    }
+  }
+}

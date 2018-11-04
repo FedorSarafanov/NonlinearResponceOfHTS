@@ -1,0 +1,16 @@
+\xdef\opa{0.6}
+\ifx\setka\undefined
+    {}
+    \else
+      \if\setka1
+        \draw[step=1.0,blue,thick, opacity=\opa] (0,0) grid (\SIZE,\SIZE);
+        \draw[step=0.5,blue,very thin, opacity=\opa] (0,0) grid (\SIZE,\SIZE);
+
+        \foreach \i in {0,1,...,\SIZE} {
+            \draw (0,\i) node [left,  opacity=\opa] {\i};
+            \draw (\i,0) node [below,  opacity=\opa] {\i};
+        }
+      \else
+        {}
+      \fi
+    \fi

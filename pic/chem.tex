@@ -1,0 +1,139 @@
+% Observer/Estimator
+% Author: Dominik Haumann
+\documentclass[tikz]{standalone}
+
+\usepackage[english,russian]{babel}
+\usepackage[defaultsans]{droidsans}
+\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be typewriter style
+\usepackage[T2A,T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\input{tikz.tex} 
+
+\usepackage{amsmath} % nice math symbols
+\usepackage{bm} % bold math
+\usepackage{color} % change text color        
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing} % for snake lines
+\usetikzlibrary{matrix} % for block alignment
+\usetikzlibrary{arrows} % for arrow heads
+\usetikzlibrary{calc} % for manimulation of coordinates
+
+% TikZ styles for drawing
+\tikzstyle{block} = [draw,rectangle,thick,minimum height=3em,minimum width=7em,text width=7em,align=center]
+\tikzstyle{sum} = [draw,circle,inner sep=0mm,minimum size=2mm]
+\tikzstyle{connector} = [->,thick]
+\tikzstyle{line} = [thick]
+\tikzstyle{branch} = [circle,inner sep=0pt,minimum size=1mm,fill=black,draw=black]
+\tikzstyle{guide} = []
+\tikzstyle{snakeline} = [connector, decorate, decoration={pre length=0.2cm,
+                         post length=0.2cm, snake, amplitude=.4mm,
+                         segment length=2mm},thick, magenta, ->]
+
+\renewcommand{\vec}[1]{\ensuremath{\boldsymbol{#1}}} % bold vectors
+\def \myneq {\skew{-2}\not =} % \neq alone skews the dash
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,fit,positioning,shapes.symbols,chains}
+\begin{document}
+
+  \begin{tikzpicture}[scale=1, auto, >=stealth']
+\xdef\SIZE{7}
+% \xdef\setka{1}
+\input{setka} 
+	\node[block] (gen) at (0,0) {СВЧ-генератор};
+	\node [block, right=5em of gen] (amp) {Усилитель мощности};
+	% \node [block, right=1cm of amp] (mod) {Модулятор};
+	\node [block, right=5em of amp] (lpf) {ФНЧ};
+	\node [block, below=3em of lpf] (cyc) {Циркулятор};
+	\node [block, below=3em of cyc] (bpf) {Полосовой фильтр};
+	\node [block, below=3em of bpf] (adc1) {АЦП};
+	\node [block, left=5em of adc1,fill=magenta!10] (comp) {Компьютер};
+	\node [block, left=5em of comp] (adc2) {АЦП};
+
+	\node [block, left=5em of cyc] (z) {Зонд};
+	\node [block, left=5em of z] (T) {Термодатчик};
+
+	\draw[connector] (gen) -- (amp);
+	\draw[connector] (amp) -- (lpf);
+	\draw[connector] (lpf) -- (cyc)  node [pos=0.5,right,scale=1.1] {$\omega$};
+	\draw[connector] (cyc) -- (bpf) node [pos=0.5,right,scale=1.1] {$\omega,3\omega, \ldots$};
+	\draw[connector] (bpf) -- (adc1)  node [pos=0.5,right,fill=white,scale=1.1] {$3\omega$};
+	\draw[connector] (adc1) -- (comp);
+	\draw[connector] (adc2) -- (comp);
+
+	% \draw[connector] ($(z.south)+(-1.5em,0)$) -- ($(adc2.north)+(-1.5em,0)$);
+
+	% \draw[connector] ($(z.south)+(1.5em,0)$) |- ($(adc1.west)$);
+	\draw[connector] (T) -- (adc2)  node [pos=0.5,right,scale=1.1] {$T$};
+	
+	\draw[connector] ($(cyc.west)+(0,1em)$) -- ($(z.east)+(0,1em)$) node [pos=0.5,above,scale=1.1] {$\omega$};
+	\draw[connector,<-] ($(cyc.west)+(0,-1em)$) -- ($(z.east)+(0,-1em)$) node [pos=0.5,below,scale=1.1] {$\omega,3\omega, \ldots$};
+
+    % \small
+    % % node placement with matrix library: 5x4 array
+    % \matrix[ampersand replacement=\&, row sep=0.2cm, column sep=0.4cm] {
+    %   %
+    %   \node[block] (F1) {$\vec{u}_i = F_i(\{\widetilde{\vec{x}}_j\}_{j=1}^N)$}; \&
+    %   \node[branch] (u1) {}; \&
+    %   \&
+    %   \node[block] (f1) {$\begin{matrix}
+    %         \dot{\vec{x}}_i =
+    %           f_i(\vec{x}_i,
+    %               \textcolor{red}{\{\widetilde{\vec{x}}_j\}_{j \myneq i}},
+    %               \vec{u}_i,
+    %               t)\\
+    %         \vec{y}_i =
+    %           g_i(\vec{x}_i,
+    %               \textcolor{blue}{\{\widetilde{\vec{x}}_j\}_{j \myneq i}},
+    %               t)
+    %       \end{matrix}$}; \& \\
+
+    %   \&
+    %   \&
+    %   \&
+    %   \node[block] (L1) {$\vec{e}_i(\vec{y}_i - \widetilde{\vec{y}}_i)$};\&
+    %   \node [sum] (e1) {}; \\
+
+    %   \&
+    %   \&
+    %   \node[sum] (v1) {}; \&
+    %   \node[block] (o1) {$\begin{matrix}
+    %         \dot{\widetilde{\vec{x}}}_i =
+    %           \widetilde{f}_i(\widetilde{\vec{x}}_i,
+    %                           \textcolor{red}{\{\widetilde{\vec{x}}_j\}_{j \myneq i}},
+    %                           \vec{v}_i, t)\\
+    %           \widetilde{\vec{y}}_i =
+    %             g_i(\widetilde{\vec{x}}_i,
+    %                 \textcolor{blue}{\{\widetilde{\vec{x}}_j\}_{j \myneq i}},
+    %                 t)
+    %       \end{matrix}$};
+    %   \&
+    %   \\
+    %   \node[guide] (i1) {}; \& \& \& \& \\
+    % };
+
+    % % now link the nodes
+    % \draw [line] (F1) -- (u1);
+    % \draw [connector] (u1) -- node {$u_i$} (f1);
+    % \draw [connector] (f1) -| node[near end] {$\vec{y}_i$} (e1);
+    % \draw [connector] (e1) -- (L1);
+    % \draw [connector] (L1) -| (v1);
+    % \draw [connector] (v1) -- node {$\vec{v}_i$} (o1);
+    % \draw [connector] (u1) |- (v1);
+    % \draw [connector] (o1) -| node[pos=0.96] {$-$} node [near end, swap]
+    %                   {$\widetilde{\vec{y}}_i$} (e1);
+    % \draw [connector] (o1.south) -- ++(0,-.5cm) -| node [near start]
+    %                   {$\widetilde{\vec{x}}_i$} ($(F1.south) + (0.4cm, 0em)$);
+    
+    % % draw the snake lines with offset (using the calc library)
+    % \draw [snakeline] ($(i1) - (0.4cm, -1cm)$) -- node
+    %   {$\{\widetilde{\vec{x}}_j\}_{j \myneq i}$} ($(F1.south) - (0.4cm, 0em)$);
+
+    % \draw [snakeline, swap] ($(v1.east) - (1.0cm, 0.4cm)$) -- node
+    %   {$\{\widetilde{\vec{x}}_j\}_{j \myneq i}$} ($(o1.west) - (0cm, 0.4cm)$);
+    
+    % \draw [snakeline, swap] ($(u1.east) + (0.1cm, -0.4cm)$) -- node
+    %   {$\{\widetilde{\vec{x}}_j\}_{j \myneq i}$} ($(f1.west) - (0cm, 0.4cm)$);
+
+
+  \end{tikzpicture}
+\end{document}

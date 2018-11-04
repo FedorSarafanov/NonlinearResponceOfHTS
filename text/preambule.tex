@@ -1,0 +1,115 @@
+%!TEX root = ../presa.tex
+\documentclass[12pt,pdf,hyperref={unicode}, dvipsnames]{beamer}
+\usepackage[english,russian]{babel}
+% \usepackage[T2A,T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage[unicode]{hyperref}
+\usepackage{pgfplots,standalone}
+% \usepackage{lmodern}
+\pgfplotsset{compat=newest} 
+\usetikzlibrary{%
+    decorations.pathreplacing,%
+    decorations.pathmorphing,%
+    patterns,%
+    angles,%
+    quotes,%
+    calc, %
+    3d, %
+    backgrounds, %
+    positioning%
+}
+
+% Стиль презентации
+\usetheme{Warsaw}
+
+% \setbeamercolor{frametitle right}{fg=white,bg=Brown!85}
+% \setbeamercolor{frametitle}{fg=white,bg=Brown!85}
+\setbeamercolor{frametitle right}{fg=white,bg=black!95}
+\setbeamercolor{frametitle}{fg=white,bg=black!95}
+
+\setbeamertemplate{frametitle}[default][colsep=-4bp,rounded=false,shadow=false]
+% \setbeamertemplate{frametitle}
+% {
+%     \nointerlineskip
+%     \begin{beamercolorbox}[sep=0.3cm,ht=1.8em,wd=\paperwidth]{frametitle}
+%         \vbox{}\vskip-2ex%
+%         \strut\insertframetitle\strut
+%         \vskip-0.8ex%
+%     \end{beamercolorbox}
+% }
+\setbeamercolor{section in head/foot}{fg=white, bg=black}
+\setbeamertemplate{frametitle}{%
+    \nointerlineskip%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1.6ex]{frametitle}
+        \hspace*{1ex}\insertframetitle%
+    \end{beamercolorbox}%
+}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{}
+\let\Tiny=\tiny % решает проблему со шрифтами в TexLive
+% \setbeamertemplate
+% 	{footline}{
+% 		\color{black!40!white}
+% 		\quad\hfill
+% 		\insertframenumber/\inserttotalframenumber
+% 		\hfill\vspace{1em}\quad
+% 	} 
+
+\setbeamertemplate{navigation symbols}{}
+
+\beamersetrightmargin{0.5cm} 
+\beamersetleftmargin{0.5cm}
+
+\setbeamertemplate{enumerate item}{
+	\usebeamercolor[bg]{item projected}
+    \tikz[baseline = -4pt]{\draw[fill=black!95] (0,0) circle (3pt);}%
+	% \raisebox{1pt}{\colorbox{bg}{\color{fg}\footnotesize\bf\insertenumlabel}}%
+}
+\setbeamertemplate{enumerate subitem}{ 
+    \usebeamercolor[bg]{item projected}
+    \tikz[baseline = -4pt]{\draw[fill=black!95] (0,0) circle (2.5pt);}%
+    % \raisebox{1pt}{\colorbox{bg}{\color{fg}\footnotesize\bf\insertenumlabel.\insertsubenumlabel}}%
+}
+\setbeamercolor{item projected}{bg=black,fg=white}
+
+% \setbeamertemplate{itemize item}{%
+% 	\usebeamercolor[bg]{item projected}%
+% 	\raisebox{1pt}{{\color{bg}\footnotesize$\bf\square$}}%
+% }
+% \setbeamercolor{item projected}{bg=black,fg=white}
+\setbeamercolor{title}{bg=black,fg=white}
+
+\newcommand\frametitless[1]{\subsection{#1}\frametitle{#1}}
+
+\usepackage{booktabs, setspace}
+\usepackage{esdiff,esint}
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\title[]{Исследование нелинейных свойств высокотемпературных сверхпроводников с помощью ближнепольной СВЧ-микроскопии}
+\institute{Радиофизический факультет ННГУ, 430 группа}
+\date{Нижний Новгород, 2018}
+
+\usepackage[font=footnotesize,justification=centering]{caption}
+\captionsetup[figure]{labelformat=empty}%
+% \setbeamertemplate{caption}[default]
+\usefonttheme{professionalfonts}
+\defbeamertemplate*{background canvas}{mydefault}
+    {%
+      \ifbeamercolorempty[bg]{background canvas}{}{\color{bg}\vrule width\paperwidth height\paperheight}% copied beamer default here
+    }
+
+    \defbeamertemplate*{background canvas}{bg}
+    {%
+      \color{black}\vrule width\paperwidth height\paperheight% added bg color
+    }
+
+    \BeforeBeginEnvironment{frame}{%
+      \setbeamertemplate{background canvas}[mydefault]%
+    }
+
+    \makeatletter 
+    \define@key{beamerframe}{bg}[true]{%
+      \setbeamertemplate{background canvas}[bg]%
+    }
+    \makeatother
